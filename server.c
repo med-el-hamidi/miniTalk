@@ -25,8 +25,8 @@ int	main(void)
 
 static void	handler(int signum, siginfo_t *info, void *extra_info)
 {
-	static char		c;
-	static int		bit;
+	static char	c = 0;
+	static int	bit = 0;
 	static pid_t	client_pid;
 
 	(void)extra_info;

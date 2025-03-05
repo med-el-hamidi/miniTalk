@@ -4,7 +4,7 @@ static void	send(pid_t pid, char c);
 static void	ack_handler(int signum);
 static void	end_handler(int signum);
 
-volatile sig_atomic_t	status;
+volatile sig_atomic_t	status = 0;
 
 int	main(int ac, char *av[])
 {
@@ -40,7 +40,7 @@ static void	send(pid_t pid, char c)
 			Kill(pid, SIGUSR2);
 		++bit;
 		if (!status)
-			usleep(42);
+			usleep(10);
 		status = 0;
 	}
 }
