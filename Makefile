@@ -6,6 +6,38 @@ LIBFT := libft/libft.a
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 PATH_LIBFT := ./libft/
+PATH_FT_PRINTF = ft_printf/
+PATH_SRCS = $(PATH_FT_PRINTF)srcs/
+PATH_UTILS = $(PATH_FT_PRINTF)utils/
+SRCS_LIBFT = ft_atoi.c \
+			ft_bzero.c \
+			ft_isdigit.c \
+			ft_nbrlen_base.c \
+			ft_putchar_fd.c \
+			ft_putnbr_base_fd.c \
+			ft_putptr_fd.c \
+			ft_putstr_fd.c \
+			ft_ptrlen.c \
+			ft_strncmp.c \
+			ft_strlen.c \
+			$(PATH_FT_PRINTF)ft_printf.c
+
+SRCS_SRCS = $(PATH_SRCS)ft_handle_flags_and_digits.c \
+			$(PATH_SRCS)ft_print_char.c \
+			$(PATH_SRCS)ft_print_decimal.c \
+			$(PATH_SRCS)ft_print_hex.c \
+			$(PATH_SRCS)ft_print_ptr.c \
+			$(PATH_SRCS)ft_print_string.c \
+			$(PATH_SRCS)ft_output_length_cntl.c
+
+SRCS_UTILS = $(PATH_UTILS)ft_printf_utils.c \
+			$(PATH_UTILS)print_decimal_utils.c \
+			$(PATH_UTILS)print_hex_utils.c \
+			$(PATH_UTILS)print_ptr_utils.c
+
+SRCS_LIBFT := $(addprefix $(PATH_LIBFT), $(SRCS_LIBFT))
+SRCS_SRCS := $(addprefix $(PATH_LIBFT), $(SRCS_SRCS))
+SRCS_UTILS := $(addprefix $(PATH_LIBFT), $(SRCS_UTILS))
 
 CLIENT_SRCS := client.c \
 				input_utils.c \
@@ -37,10 +69,10 @@ $(SERVER): $(LIBFT) $(SERVER_OBJCS)
 $(SERVER_OBJCS): %.o: %.c server.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-dep_libft_objcs:
-	make -C $(PATH_LIBFT)
 
-$(LIBFT): dep_libft_objcs
+$(LIBFT):	$(SRCS_LIBFT) $(SRCS_SRCS) $(SRCS_UTILS) \
+			$(PATH_LIBFT)libft.h $(PATH_LIBFT)$(PATH_FT_PRINTF)ft_printf.h \
+			$(PATH_LIBFT)$(PATH_SRCS)srcs.h $(PATH_LIBFT)$(PATH_UTILS)utils.h
 	make -C $(PATH_LIBFT)
 
 bonus: $(BNAME) $(BSERVER)
@@ -69,4 +101,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean dep_libft_objcs
+.PHONY: clean
