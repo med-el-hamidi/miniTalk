@@ -44,4 +44,4 @@ It consists of a **client** and a **server**, where the client sends messages to
 - Invalid arguments (e.g., missing PID, empty string).
 - Invalid server PID (if process doesn’t exist).
 
-- [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/med-el-hamidi/miniTalk/blob/main/LICENSE.md)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/med-el-hamidi/miniTalk/blob/main/LICENSE.md)
