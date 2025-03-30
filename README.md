@@ -25,9 +25,9 @@ It consists of a **client** and a **server**, where the client sends messages to
    ./serve
    ```
 2. **Send a message with the basic client:**
-```sh
-  ./client <server_pid> "Hello from bonus!"
-```
+   ```sh
+     ./client <server_pid> "Hello from basic!"
+   ```
 
 ### To use the bonus version:
 
@@ -36,9 +36,9 @@ It consists of a **client** and a **server**, where the client sends messages to
    ./server_bonus
    ```
 2. **Send a message with the bonus client:**
-```sh
-  ./client_bonus <server_pid> "Hello from bonus!"
-```
+   ```sh
+     ./client_bonus <server_pid> "Hello from bonus!"
+   ```
 
 ❗ Error Handling
 - Invalid arguments (e.g., missing PID, empty string).
