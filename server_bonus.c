@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hami <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 19:55:56 by mel-hami          #+#    #+#             */
-/*   Updated: 2025/03/06 21:01:11 by mel-hami         ###   ########.fr       */
+/*   Created: 2025/03/10 21:40:26 by mel-hami          #+#    #+#             */
+/*   Updated: 2025/03/10 21:40:27 by mel-hami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "server_bonus.h"
 
 int	main(void)
 {
@@ -36,17 +36,41 @@ static void	_signal(int signum, void *handler)
 	}
 }
 
-static void	char_handler(pid_t *client_pid, char c, int *bit)
+static int	unicode_checker(unsigned char c)
 {
+	if (c < 0b10000000)
+		return (1);
+	else if ((c & 0b11100000) == 0b11000000)
+		return (2);
+	else if ((c & 0b11110000) == 0b11100000)
+		return (3);
+	else if ((c & 0b11111000) == 0b11110000)
+		return (4);
+	return (0);
+}
+
+static void	unicode_handler(pid_t *client_pid, char c, int *idx, int *bit)
+{
+	static unsigned char	unicode[6];
+	static int				nbr = 0;
+
 	if (*bit == CHAR_BIT)
 	{
 		*bit = 0;
+		if (*idx == 0)
+			nbr = unicode_checker(c);
+		unicode[(*idx)++] = c;
+		if (--nbr == 0)
+		{
+			unicode[*idx] = '\0';
+			ft_printf("%s", unicode);
+			*idx = 0;
+		}
 		if (c == '\0')
 		{
-			kill(*client_pid, SIGUSR1);
+			kill(*client_pid, SIGUSR2);
 			return ;
 		}
-		ft_printf("%c", c);
 	}
 	kill(*client_pid, SIGUSR1);
 }
@@ -55,12 +79,14 @@ static void	handler(int signum, siginfo_t *info, void *context)
 {
 	static char		c = 0;
 	static int		bit = 0;
+	static int		idx = 0;
 	static pid_t	client_pid = 0;
 
 	(void)context;
 	if (client_pid == 0 || client_pid != info->si_pid)
 	{
 		client_pid = info->si_pid;
+		idx = 0;
 		c = 0;
 		bit = 0;
 	}
@@ -69,5 +95,5 @@ static void	handler(int signum, siginfo_t *info, void *context)
 	else if (signum == SIGUSR2)
 		c &= ~(0b10000000 >> bit);
 	bit++;
-	char_handler(&client_pid, c, &bit);
+	unicode_handler(&client_pid, c, &idx, &bit);
 }

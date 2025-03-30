@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hami <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 19:37:10 by mel-hami          #+#    #+#             */
-/*   Updated: 2025/03/24 07:38:32 by mel-hami         ###   ########.fr       */
+/*   Created: 2025/03/10 21:39:41 by mel-hami          #+#    #+#             */
+/*   Updated: 2025/03/24 07:39:02 by mel-hami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "client_bonus.h"
 
 static void	send(pid_t pid, char c);
 static void	ack_handler(int signum);
+static void	end_handler(int signum);
 
 volatile sig_atomic_t	g_proceed = 0;
 
@@ -23,15 +24,16 @@ int	main(int ac, char *av[])
 	char	*message;
 
 	if (ac != 3)
-		exit_failure("INVALID_INPUT: ./client <SERVER_PID> <\"MESSAGE\">\n");
+		exit_failure("INVALID_INPUT: ./client_bonus <SERVER_PID> <\"MESSAGE\">\n");
 	handle_input(av[1]);
 	server_pid = ft_atoi(av[1]);
 	if (server_pid <= 0)
-		exit_failure("INVALID_PID: ./client <SERVER_PID> <\"MESSAGE\">\n");
+		exit_failure("INVALID_PID: ./client_bonus <SERVER_PID> <\"MESSAGE\">\n");
 	message = av[2];
 	if (*message == '\0')
-		exit_failure("EMPTY_MESSAGE: ./client <SERVER_PID> <\"MESSAGE\">\n");
+		exit_failure("EMPTY_MESSAGE: ./client_bonus <SERVER_PID> <\"MESSAGE\">\n");
 	_signal(SIGUSR1, ack_handler);
+	_signal(SIGUSR2, end_handler);
 	while (*message)
 		send(server_pid, *message++);
 	send(server_pid, '\0');
@@ -60,4 +62,11 @@ static void	ack_handler(int signum)
 {
 	(void)signum;
 	g_proceed = 1;
+}
+
+static void	end_handler(int signum)
+{
+	(void)signum;
+	ft_printf("\n->->-> Message delivered successfully! <-<-<-\n");
+	exit(EXIT_SUCCESS);
 }

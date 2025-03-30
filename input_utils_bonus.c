@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_utils.c                                      :+:      :+:    :+:   */
+/*   input_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hami <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 19:51:28 by mel-hami          #+#    #+#             */
-/*   Updated: 2025/03/06 19:51:30 by mel-hami         ###   ########.fr       */
+/*   Created: 2025/03/10 21:40:17 by mel-hami          #+#    #+#             */
+/*   Updated: 2025/03/10 21:40:18 by mel-hami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "client_bonus.h"
 
 static int	_parse(char *str, char *arg, int *len);
 static int	_is_int(char *arg, int len);
@@ -24,7 +24,7 @@ void	handle_input(char *nbr)
 	len = 0;
 	len = _parse(nbr, arg, &len);
 	if (len == -1 || !_is_int(arg, len))
-		exit_failure("NOT_INT: ./client <SERVER_PID> <\"MESSAGE\">\n");
+		exit_failure("NOT_INT: ./client_bonus <SERVER_PID> <\"MESSAGE\">\n");
 }
 
 static int	_parse(char *str, char *arg, int *len)

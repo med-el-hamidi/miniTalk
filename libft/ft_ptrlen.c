@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_ptrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-hami <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 19:52:09 by mel-hami          #+#    #+#             */
-/*   Updated: 2025/03/06 19:52:25 by mel-hami         ###   ########.fr       */
+/*   Created: 2025/03/06 20:55:49 by mel-hami          #+#    #+#             */
+/*   Updated: 2025/03/06 20:55:50 by mel-hami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
-# include "libft/ft_printf/ft_printf.h"
-# include <signal.h>
-# include <limits.h>
+#include "libft.h"
 
-static void	_signal(int signum, void *handler);
-static void	char_handler(pid_t *client_pid, char c, int *bit);
-static void	handler(int signum, siginfo_t *info, void *context);
-#endif
+int	ft_ptrlen(uintptr_t n)
+{
+	int	i;
+
+	i = 0;
+	if (n <= 0)
+		i = 1;
+	while (n != 0)
+	{
+		n /= 16;
+		i++;
+	}
+	return (i);
+}
